@@ -67,9 +67,8 @@ info.dwCursorPosition.Y + 1);
 //UDF FOR MOBILE PHONE
 void phone()
 {
-    //setcolor(RED);
-	system("cls");
 	SetColorAndBackground(4,1);
+	system("cls");
 	int i,j;
 	for(i=0;i<20;i++)
 	{
@@ -601,15 +600,14 @@ void box()
 //UDF for userid password
 int userid_pass()
 {
-	string userid;//password;
-	char password[10],ch,r;
+	string userid;//userid;
+	char ch,r,password[10];//password
 	gotoxy(23,11);
 	cout<<"user id =";
 	gotoxy(23,14);
 	cout<<"password =";
 
-	setcolor(BLUE);
-	SetColorAndBackground(5,3);
+	SetColorAndBackground(5,10);
 	for(int i=0;i<3;i++)
 	{
 		gotoxy(34,11);
@@ -688,8 +686,8 @@ int userid_pass()
 	return 0;
 }
 
-class user{ 
-		int customerno;
+class user
+{
 	    string name,location;
 
 	    protected:
@@ -704,7 +702,6 @@ class user{
 	    int databal;
 	    user()
 	    {	
-			customerno=0;
 			name = " ";
 			location = " ";
 			mobileno=0;
@@ -715,10 +712,6 @@ class user{
 	    void showdata();
 	    void showall();
 	    void modify();
-	    int retcustno()
-	    {	
-			return customerno;
-	    }
 	    long long mobile1()
 	    {	
 			return mobileno;
@@ -741,8 +734,7 @@ void user::getdata()
 	setcolor(YELLOW);
 	SetColorAndBackground(10,1);
 	system("cls");
-	customerno++;
-	cout<<"customer no "<<customerno;
+	cout<<"\n\n\tEnter details of new customer: ";
 	gotoxy(10,4);
 	cout<<"enter the name =";
 	cin>>name;
@@ -765,10 +757,9 @@ void user::getdata()
 }
 
 void user::showdata()
-{	setcolor(YELLOW);
+{	
 	SetColorAndBackground(8,3);
 	system("cls");
-	cout<<"\n\tCustomer number ="<<customerno;
 	cout<<"\n\tCustomer name ="<<name;
 	cout<<"\n\tCustomer location ="<<location;
 	cout<<"\n\tCustomer mobile number : "<<mobileno;
@@ -778,7 +769,7 @@ void user::showdata()
 
 void user::showall()
 {	
-	cout<<setw(6)<<customerno<<setw(10)<<name<<setw(20)<<location;
+	cout<<setw(6)<<name<<setw(20)<<location;
 	cout<<"\t+91-"<<mobileno<<"\tRs."<<mobilebal<<"\t\t"<<databal<<"MB\n";
 }
 
@@ -786,7 +777,6 @@ void user::modify()
 {	
 	string nm,add;
 	long long mno1;
-	setcolor(BLUE);
 	SetColorAndBackground(5,3);
 	system("cls");
 	showdata();
@@ -954,42 +944,48 @@ class payment:virtual public user
 void payment::credit_card()
 {
 		string s,c;
-		gotoxy(10,14);
-		cout<<"\t\tEnter card Holder name=";
+		SetColorAndBackground(5,10);
+		system("cls");
+		cout<<" \n\n\t\t CREDIT/DEBIT CARD \n\n";
+		gotoxy(10,4);
+		cout<<"\t\tEnter card Holder name= ";
 		cin>>card_holder;
-		gotoxy(10,16);
-		cout<<"\t\tEnter card number=";
+		gotoxy(10,6);
+		cout<<"\t\tEnter card number(16 digit)= ";
 		cin>>card_no;
 		s = to_string(card_no);
 		while(s.length()!=16)
 		{
-			gotoxy(10,16);
+			gotoxy(10,6);
 			clreol();
-			gotoxy(10,16);
-			cout<<"\t\tEnter card number(16 digit)=";
+			gotoxy(10,6);
+			cout<<"\t\tEnter card number(16 digit)= ";
 			cin>>card_no;
 			s = to_string(card_no);
 		}
-		gotoxy(10,18);
-		cout<<"\t\tEnter CVV=";
+		gotoxy(10,8);
+		cout<<"\t\tEnter CVV(3 digit)= ";
 		cin>>cvv;
 		c = to_string(cvv);
 		while(c.length()!=3)
 		{
-			gotoxy(9,18);
+			gotoxy(9,8);
 			clreol();
-			gotoxy(10,18);
+			gotoxy(10,8);
 			cout<<"\t\tEnter CVV(3 digit)=";
 			cin>>cvv;
 			c = to_string(cvv);
 		}
-		gotoxy(10,20);
-		cout<<"\t\tEnter expiry date(mm/yyyy)=";
+		gotoxy(10,10);
+		cout<<"\t\tEnter expiry date(mm/yyyy)= ";
 		cin>>exp_date;
 }
 int payment::net_banking()
 {
 		int c,t;
+		SetColorAndBackground(5,10);
+		system("cls");
+		cout<<" \n\n\t\t NET BANKING \n\n";
 		cout<<"Choose from following banks"<<endl;
 		cout<<"\t\t1.State Bank of India\n";
 		cout<<"\t\t2.AXIS Bank\n";
@@ -1043,25 +1039,43 @@ int payment::upi()
 {
 	string upi_id;
 	long long pin;
+	int flag = 0;
 	char confirm ='y';
-	gotoxy(10,14);
-	cout<<"Enter your upi id";
-	cin>>upi_id;
-	gotoxy(10,16);
-	cout<<"Pay now(y/n)";
+	SetColorAndBackground(5,10);
+	system("cls");
+	cout<<" \n\n\t\t UPI PAYMENT MODE \n\n";
+	while(flag == 0)
+	{
+		gotoxy(12,4);
+		clreol();
+		gotoxy(12,4);
+		cout<<"Enter your upi id(eg-abc@upi): ";
+		cin>>upi_id;
+		for(int i=0;i<upi_id.length();i++)
+		{
+			if(upi_id[i] == '@')
+			{
+				flag = 1;
+				break;
+			}
+		} 
+	}
+	
+	gotoxy(12,6);
+	cout<<"Pay now?(y/n): ";
 	cin>>confirm;
 	if(confirm == 'y')
 	{
-		gotoxy(10,18);
-		cout<<"Enter upi pin(6 digit)";
+		gotoxy(12,8);
+		cout<<"Enter upi pin(6 digit): ";
 		cin>>pin;
 		string s = to_string(pin);
 		while(s.length()!=6)
 		{
-			gotoxy(9,18);
+			gotoxy(11,8);
 			clreol();
-			gotoxy(10,18);
-			cout<<"Enter upi pin(6 digit)";
+			gotoxy(12,8);
+			cout<<"Enter upi pin(6 digit): ";
 			cin>>pin;
 			s = to_string(pin);
 		}
@@ -1145,17 +1159,19 @@ class customer:public rechge,public payment
 }u,u1;
 //UDF FOR MAIN MENU
 void intro()
-{       setcolor(YELLOW);
+{
 	SetColorAndBackground(5,3);
 	int op;
 	
 	system("cls");
 	do
-	{	cout<<"\n\n\n";
-		cout<<"\t\t1.Customer Menu \n";
-		cout<<"\t\t2.Recharge Menu \n";
-		cout<<"\t\t3.Payment Menu \n";
-		cout<<"\t\t4.Exit    \n\n\n\n";
+	{	
+		cout<<"\n\n\n";
+		cout<<"\t\t \t MAIN MENU\n\n";
+		cout<<"\t\t1.\tCustomer Menu \n";
+		cout<<"\t\t2.\tRecharge Menu \n";
+		cout<<"\t\t3.\tPayment Menu \n";
+		cout<<"\t\t4.\tExit    \n\n\n\n";
 		cout<<"\t\t********what you want to do??********\n\n";
 		cout<<"\t\t"; cin>>op;
 
@@ -1284,8 +1300,8 @@ void viewall()
 
 	cout<<"\t\tDISPLAYING ALL CUSTOMER INFORMATION\n";
 	cout<<"\t   ***************************************\n\n";
-	cout<<setw(8)<<"customer no"<<setw(6)<<"name"<<setw(20)<<"location"<<"\tphoneno \tmobileno \tdata \n";
-	cout<<"\t\t\t\t \t\t\tbalance\t\tbalance\n";
+	cout<<setw(6)<<"name"<<setw(20)<<"location"<<"\tphoneno \tmobileno \tdata \n";
+	cout<<"\t\t\t \t\t\tbalance\t\tbalance\n";
 	cout<<"--------------------------------------------------------------------------------\n\n";
 	while(file.read((char*)&u,sizeof(u)))
 	{	
@@ -1343,6 +1359,7 @@ void customer()
 	int op1;
 	system("cls");
 	cout<<"\n\n\n";
+	cout<<"\t\t \t CUSTOMER MENU\n\n";
 	cout<<"\t\t1.\tAdd a customer information             \n";
 	cout<<"\t\t2.\tview a particular customer information \n";
 	cout<<"\t\t3.\tdelete one customer information        \n";
@@ -1415,7 +1432,7 @@ void BalRech()
 			flag = pay();
 			if(flag == 0)
 			{
-				cout<<"\n\tConfirm Payment??(y/n)";
+				cout<<"\n\tConfirm Payment?(y/n): ";
 				cin>>confirm;
 				
 			if(confirm == 'y')
@@ -1502,7 +1519,7 @@ void DataRech()
 			flag = pay();
 			if(flag == 0)
 			{
-				cout<<"\n\tConfirm Payment??(y/n)";
+				cout<<"\n\tConfirm Payment?(y/n): ";
 				cin>>confirm;
 			if(confirm == 'y')
 			{
@@ -1652,13 +1669,14 @@ void recharge()
 	int op2;
 	system("cls");
 	cout<<"\n\n\n";
-	cout<<"\t\t1.\t\tMobile Balance Recharge\n";
-	cout<<"\t\t2.\t\tData Balance Recharge\n";
-	cout<<"\t\t3.\t\tCheck Mobile Balance\n";
-	cout<<"\t\t4.\t\tCheck Data Balance\n";
-	cout<<"\t\t5.\t\tView Overall Recharge\n";
-	cout<<"\t\t6.\t\tTransfer money/view payment details\n";
-	cout<<"\t\t7.\t\tTo Go Back To Main Menu\n\n\n\n\n";
+	cout<<"\t\t \t RECHARGE MENU\n\n";
+	cout<<"\t\t1.\tMobile Balance Recharge\n";
+	cout<<"\t\t2.\tData Balance Recharge\n";
+	cout<<"\t\t3.\tCheck Mobile Balance\n";
+	cout<<"\t\t4.\tCheck Data Balance\n";
+	cout<<"\t\t5.\tView Overall Recharge\n";
+	cout<<"\t\t6.\tTransfer money/view payment details\n";
+	cout<<"\t\t7.\tTo Go Back To Main Menu\n\n\n\n\n";
 	cout<<"\t\t******What you want to do??******\n\n";
 	cout<<"\t\t";cin>>op2;
 
@@ -1710,7 +1728,7 @@ void transfer()
 			flag = pay();
 			if(flag == 0)
 			{
-				cout<<"\n\tConfirm Payment??(y/n)";
+				cout<<"\n\tConfirm Payment?(y/n): ";
 				cin>>confirm;
 
 			if(confirm == 'y')
@@ -1834,7 +1852,7 @@ void delete_history()
 int pay()
 {
 	system("cls");
-		int choice,flag = 0,getb;
+		int choice,flag = 0,getb,getc;
 		cout<<"\n\n\n";
 		cout<<"\t\t1.\t\tDebit/Credit Card\n";
 		cout<<"\t\t2.\t\tNet Banking\n";
@@ -1850,8 +1868,8 @@ int pay()
 					if(getb == -1)
 					flag = 1;
 					break;
-			case 3: getb = u.upi();
-					if(getb == -1)
+			case 3: getc = u.upi();
+					if(getc == -1)
 					flag = 1;
 					break;
 			case 4: flag = 1;
@@ -1874,12 +1892,13 @@ void pay_menu()
 	
 	system("cls");
 	cout<<"\n\n\n";
-	cout<<"\t\t1.Transfer Money \n";
-	cout<<"\t\t2.View Transfer history\n";
-	cout<<"\t\t3.View Payment history\n";
-	cout<<"\t\t4.Delete Transfer history\n";
-	cout<<"\t\t5.Want to Recharge\n";
-	cout<<"\t\t6.Go back to main menu  \n\n\n\n";
+	cout<<"\t\t \t PAYMENT MENU\n\n";
+	cout<<"\t\t1.\tTransfer Money \n";
+	cout<<"\t\t2.\tView Transfer history\n";
+	cout<<"\t\t3.\tView Payment history\n";
+	cout<<"\t\t4.\tDelete Transfer history\n";
+	cout<<"\t\t5.\tWant to Recharge\n";
+	cout<<"\t\t6.\tGo back to main menu  \n\n\n\n";
 	cout<<"\t\t********what you want to do??********\n\n";
 	cout<<"\t\t"; cin>>choice;
 
@@ -1906,11 +1925,11 @@ void pay_menu()
 //UDF FOR DISPLAYING RECHARGE
 void recharge1()
 {	
-	system("cls");
-	SetColorAndBackground(5,3);
+	SetColorAndBackground(10,5);
 	sleep(0.8);
 	system("cls");
 	cout<<"\n\n\n\n\t\tPROJECT REPORT ON \n\n\n\n";
+	cout<<"\t\t";
 	for(int i=0;i<80;i++)
 	{	
 		cout<<"-";
@@ -1918,41 +1937,39 @@ void recharge1()
 	}
 	cout<<endl;
 	sleep(0.1);
-	cout<<"@@@@@   @@@@@@@@    @@@@@   @@   @@       @@       @@@@@      @@@@@       @@@@@@\n";
+	cout<<"\t\t@@@@@   @@@@@@@@    @@@@@   @@   @@       @@       @@@@@      @@@@@       @@@@@@\n";
 	sleep(0.1);
-	cout<<"@@  @@  @@         @@       @@   @@     @@   @@    @@   @@   @@           @@ \n";
+	cout<<"\t\t@@  @@  @@         @@       @@   @@     @@   @@    @@   @@   @@           @@ \n";
 	sleep(0.1);
-	cout<<"@@  @@  @@@@@@@@  @@        @@@@@@@    @@     @@   @@   @@   @@           @@@@@@\n";
+	cout<<"\t\t@@  @@  @@@@@@@@  @@        @@@@@@@    @@     @@   @@   @@   @@           @@@@@@\n";
 	sleep(0.1);
-	cout<<"@@@@@   @@        @@        @@   @@   @@@@@@@@@@   @@ @@     @@    @@@@@  @@ \n";
+	cout<<"\t\t@@@@@   @@        @@        @@   @@   @@@@@@@@@@   @@ @@     @@    @@@@@  @@ \n";
 	sleep(0.1);
-	cout<<"@@  @@  @@         @@       @@   @@   @@      @@   @@   @@   @@     @@    @@ \n";
+	cout<<"\t\t@@  @@  @@         @@       @@   @@   @@      @@   @@   @@   @@     @@    @@ \n";
 	sleep(0.1);
-	cout<<"@@  @@  @@@@@@@@    @@@@@   @@   @@   @@      @@   @@   @@    @@@@@@      @@@@@@";
-	cout<<endl;
+	cout<<"\t\t@@  @@  @@@@@@@@    @@@@@   @@   @@   @@      @@   @@   @@    @@@@@@      @@@@@@";
+	cout<<endl<<"\t\t";
 	for(int j=0;j<80;j++)
-	{ cout<<"-";
-	  sleep(0.02);
+	{ 
+		cout<<"-";
+		sleep(0.02);
 	}
 	cout<<"\n\t\t\tMANAGEMENT \n\t\t\t\tSYSTEM";
 	cout<<"\n\t\t\tLOADING";
 	for(int k=0;k<9;k++)
-	{       sleep(0.3);
+	{       
+		sleep(0.3);
 		cout<<char(177);
 	}
 }
 
 int main()
-{       setcolor(PINK);
+{  
 	SetColorAndBackground(5,3);
-	//phone();
-	//recharge1();
-	/*srand(time(0));
+	phone();
+	recharge1();
+	srand(time(0));
 	system("cls");
-	box();
-	int a = userid_pass();
-	if(a!=-1)*/
 	intro();
-	//else exit(0);
-return 0;
+	return 0;
 }
