@@ -600,6 +600,7 @@ void box()
 //UDF for userid password
 int userid_pass()
 {
+	srand(time(0));
 	string userid;//userid;
 	char ch,r,password[10];//password
 	gotoxy(23,11);
@@ -697,6 +698,7 @@ class user
 		int data_val;
 		int bal_amt;
 		int data_amt;
+
 	    public:
 		int mobilebal;
 	    int databal;
@@ -704,9 +706,9 @@ class user
 	    {	
 			name = " ";
 			location = " ";
-			mobileno=0;
-			mobilebal=0;
-			databal=0;
+			mobileno = 0;
+			mobilebal = 0;
+			databal = 0;
 	    }
 	    void getdata();
 	    void showdata();
@@ -736,10 +738,10 @@ void user::getdata()
 	system("cls");
 	cout<<"\n\n\tEnter details of new customer: ";
 	gotoxy(10,4);
-	cout<<"enter the name =";
+	cout<<"enter the name = ";
 	cin>>name;
 	gotoxy(10,6);
-	cout<<"enter the mobile number:";
+	cout<<"enter the mobile number: ";
 	cin>>mobileno;
 	string s = to_string(mobileno);
 	while(s.length()!=10)
@@ -747,12 +749,12 @@ void user::getdata()
 		gotoxy(9,6);
 		clreol();
 		gotoxy(10,6);
-		cout<<"enter the mobile number:";
+		cout<<"enter the mobile number: ";
 		cin>>mobileno;
 		s = to_string(mobileno);
 	}
 	gotoxy(10,8);
-	cout<<"enter the location:";
+	cout<<"enter the location: ";
 	cin>>location;
 }
 
@@ -760,11 +762,11 @@ void user::showdata()
 {	
 	SetColorAndBackground(8,3);
 	system("cls");
-	cout<<"\n\tCustomer name ="<<name;
-	cout<<"\n\tCustomer location ="<<location;
+	cout<<"\n\tCustomer name = "<<name;
+	cout<<"\n\tCustomer location = "<<location;
 	cout<<"\n\tCustomer mobile number : "<<mobileno;
-	cout<<"\n\tCustomer mobile balance ="<<mobilebal;
-	cout<<"\n\tCustomer data balance ="<<databal<<"MB";
+	cout<<"\n\tCustomer mobile balance = Rs. "<<mobilebal;
+	cout<<"\n\tCustomer data balance = "<<databal<<"MB";
 }
 
 void user::showall()
@@ -792,8 +794,21 @@ void user::modify()
 	cin>>mno1;
 	gotoxy(10,17);
 	string s = to_string(mno1);
-	while(s.length()>10)
+	while(s.length()!=10)
 	{ 	
+		try{
+		if(s == "-1")
+		{
+			break;
+		}
+		else throw 'a';
+		}
+		catch(char a)
+		{
+			cout<<"\n\t\tMobile number must be 10 digit long"<<endl;
+			cout<<"\t\tPlease re-enter"<<endl;
+			sleep(1.0);
+		}
 		gotoxy(10,16);
 		clreol();
 		gotoxy(10,16);
@@ -814,7 +829,6 @@ void user::modify()
 
 class rechge:virtual public user
 	{	
-		friend class payment;
 		public:
 		void balrech(int);
 		void datrech(int);
@@ -911,7 +925,6 @@ class payment:virtual public user
 	int cvv;
 	string card_holder;
 	string exp_date;
-	friend class rechge;
 
 	public:
 	long long mobno;
@@ -923,6 +936,8 @@ class payment:virtual public user
 		card_holder = "Unknown";
 		exp_date = "nil";
 		amount = 0;
+		// mobno = 0;
+		// money = 0;
 	}
 	void credit_card();
 	int net_banking();
@@ -931,10 +946,6 @@ class payment:virtual public user
 	void pay_data(int);
 	void chk_bhis();
 	void chk_dhis();
-	/*long long getmobno()
-	{
-		return mobno;
-	}*/
 	void detail()
 	{
 		cout<<"\t\t Rs "<<money<<" transferred to +91"<<mobno<<endl;
@@ -972,7 +983,7 @@ void payment::credit_card()
 			gotoxy(9,8);
 			clreol();
 			gotoxy(10,8);
-			cout<<"\t\tEnter CVV(3 digit)=";
+			cout<<"\t\tEnter CVV(3 digit)= ";
 			cin>>cvv;
 			c = to_string(cvv);
 		}
@@ -1452,13 +1463,6 @@ void BalRech()
 			found='t';
 			}
 		 }
-	     /*	 else
-		 {
-			u.balrech(8);
-			f1.seekp(rec*(sizeof(u)),ios::beg);
-			f1.write((char*)&u,sizeof(u));
-		 }
-		 */
 		 recc++;
 		 rec++;
 	}
@@ -1540,13 +1544,6 @@ void DataRech()
 		 }
 		 }
 
-	      /* else
-		 {
-			u.datrech(7);
-			f1.seekp(rec*(sizeof(u)),ios::beg);
-			f1.write((char*)&u,sizeof(u));
-		 }
-		*/
 		 recc++;
 		 rec++;
 	 }
@@ -1968,7 +1965,6 @@ int main()
 	SetColorAndBackground(5,3);
 	phone();
 	recharge1();
-	srand(time(0));
 	system("cls");
 	intro();
 	return 0;
