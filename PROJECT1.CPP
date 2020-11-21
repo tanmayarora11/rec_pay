@@ -9,6 +9,7 @@
 #include<stdio.h>
 #include<windows.h>
 #include<time.h>
+#include"functions.h"
 using namespace std;
 
 fstream file,f1,f2;     //declaring file globally
@@ -17,53 +18,6 @@ void recharge();
 int pay();
 void pay_menu();
 class payment;
-COORD coord= {0,0}; // this is global variable
-void gotoxy(int x,int y)
-{
-    coord.X=x;
-    coord.Y=y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),coord);
-}
-HANDLE hCon;
-
-enum Color { DARKBLUE = 1, DARKGREEN, DARKTEAL, DARKRED, DARKPINK, DARKYELLOW, GRAY, DARKGRAY, BLUE, GREEN, TEAL, RED, PINK, YELLOW, WHITE };
-
-void setcolor(Color c){
-        if(hCon == NULL)
-                hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(hCon, c);
-}
-void sleep(float seconds){
-    clock_t startClock = clock();
-    float secondsAhead = seconds * CLOCKS_PER_SEC;
-    // do nothing until the elapsed time has passed.
-    while(clock() < startClock+secondsAhead);
-    return;
-}
-void SetColorAndBackground(int ForgC, int BackC)
-{
-     WORD wColor = ((BackC & 0x0F) << 4) + (ForgC & 0x0F);
-     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), wColor);
-     return;
-}
-void clreol() {
-
-COORD coord;
-DWORD written;
-CONSOLE_SCREEN_BUFFER_INFO info;
-
-GetConsoleScreenBufferInfo(GetStdHandle
-(STD_OUTPUT_HANDLE), &info);
-coord.X = info.dwCursorPosition.X;
-coord.Y = info.dwCursorPosition.Y;
-
-FillConsoleOutputCharacter (GetStdHandle
-(STD_OUTPUT_HANDLE), ' ',
-info.dwSize.X - info.dwCursorPosition.X *
-info.dwCursorPosition.Y, coord, &written);
-gotoxy (info.dwCursorPosition.X + 1,
-info.dwCursorPosition.Y + 1);
-}
 //UDF FOR MOBILE PHONE
 void phone()
 {
@@ -948,7 +902,7 @@ class payment:virtual public user
 	void chk_dhis();
 	void detail()
 	{
-		cout<<"\t\t Rs "<<money<<" transferred to +91"<<mobno<<endl;
+		cout<<"\n\n\t\t Rs "<<money<<" transferred to +91- "<<mobno<<endl;
 	}
 	
 };
@@ -997,7 +951,7 @@ int payment::net_banking()
 		SetColorAndBackground(5,10);
 		system("cls");
 		cout<<" \n\n\t\t NET BANKING \n\n";
-		cout<<"Choose from following banks"<<endl;
+		cout<<"\t\tChoose from following banks\n"<<endl;
 		cout<<"\t\t1.State Bank of India\n";
 		cout<<"\t\t2.AXIS Bank\n";
 		cout<<"\t\t3.ICICI Bank\n";
@@ -1707,6 +1661,7 @@ void transfer()
 	system("cls");
 	file.open("customer.dat",ios::binary|ios::in|ios::out|ios::ate);
 	f1.open("transfer.dat",ios::binary|ios::out|ios::app);
+	cout<<"\n\n\n\t\t\tTransfer money"<<endl;
 	gotoxy(11,8);
 	cout<<"Enter your mobileno: ";
 	cin>>mobilen;
