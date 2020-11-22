@@ -750,12 +750,13 @@ void user::modify()
 	string s = to_string(mno1);
 	while(s.length()!=10)
 	{ 	
-		try{
-		if(s == "-1")
+		try
 		{
-			break;
-		}
-		else throw 'a';
+			if(s == "-1")
+			{
+				break;
+			}
+			else throw 'a';
 		}
 		catch(char a)
 		{
@@ -878,7 +879,8 @@ class payment:virtual public user
 	long long card_no;
 	int cvv;
 	string card_holder;
-	string exp_date;
+	int month;
+	int year;
 
 	public:
 	long long mobno;
@@ -888,12 +890,11 @@ class payment:virtual public user
 		card_no = 0;
 		cvv= 0 ;
 		card_holder = "Unknown";
-		exp_date = "nil";
+		month = 0;
+		year = 0;
 		amount = 0;
-		// mobno = 0;
-		// money = 0;
 	}
-	void credit_card();
+	int credit_card();
 	int net_banking();
 	int upi();
 	void pay_bal(int);
@@ -906,7 +907,7 @@ class payment:virtual public user
 	}
 	
 };
-void payment::credit_card()
+int payment::credit_card()
 {
 		string s,c;
 		SetColorAndBackground(5,10);
@@ -941,9 +942,56 @@ void payment::credit_card()
 			cin>>cvv;
 			c = to_string(cvv);
 		}
+		
 		gotoxy(10,10);
-		cout<<"\t\tEnter expiry date(mm/yyyy)= ";
-		cin>>exp_date;
+		cout<<"\t\tEnter expiry month(mm)= ";
+		cin>>month;
+		string m = to_string(month);
+		while(m.length()>2)
+		{
+			gotoxy(10,10);
+			clreol();
+			gotoxy(10,11);
+			clreol();
+			gotoxy(10,12);
+			clreol();
+			gotoxy(10,10);
+			cout<<"\t\tEnter expiry month(mm)= ";
+			cin>>month;
+			string m = to_string(month);
+		}
+		gotoxy(10,12);
+		cout<<"\t\tEnter expiry year(yyyy)= ";
+		cin>>year;
+		string y = to_string(year);
+		while(y.length()!=4)
+		{
+			gotoxy(10,12);
+			clreol();
+			gotoxy(10,12);
+			cout<<"\t\tEnter expiry year(yyyy)= ";
+			cin>>year;
+			string y = to_string(year);		
+		}
+		try
+		{
+			if(month > 12)
+			throw 0;
+			else if (year <= 2020)
+			throw 'e'; 
+		}
+		catch(char c)
+		{
+			cout<<"\n\t\talready expired"<<endl;
+			return -1;
+		}
+		catch(int k)
+		{
+			gotoxy(10,14);
+			cout<<"\t\tIncorrect expiry date"<<endl;
+			return -1;	
+		}
+		return 0;
 }
 int payment::net_banking()
 {
@@ -1003,8 +1051,9 @@ int payment::net_banking()
 int payment::upi()
 {
 	string upi_id;
-	long long pin;
-	int flag = 0;
+	char pin[100];
+	char ch;
+	int flag = 0,j;
 	char confirm ='y';
 	SetColorAndBackground(5,10);
 	system("cls");
@@ -1033,16 +1082,36 @@ int payment::upi()
 	{
 		gotoxy(12,8);
 		cout<<"Enter upi pin(6 digit): ";
-		cin>>pin;
-		string s = to_string(pin);
-		while(s.length()!=6)
+		pin:gotoxy(37,8);
+		for(j=0;j>=0;)
+		{
+			ch=getch();
+
+		if(ch!=8 && ch!=13)
+		{
+			cout<<"*";
+			pin[j]=ch;
+			j++;
+		}
+		else if(ch == 8)
+		{
+			cout<<"\b \b";
+			j--;
+		}
+		else if(ch == 13)
+		{
+			pin[j]='\0';
+			break;
+		}
+		else break;
+		}
+		while(j!=6)
 		{
 			gotoxy(11,8);
 			clreol();
 			gotoxy(12,8);
 			cout<<"Enter upi pin(6 digit): ";
-			cin>>pin;
-			s = to_string(pin);
+			goto pin;
 		}
 	}
 	else
@@ -1121,7 +1190,7 @@ void payment::chk_dhis()
 class customer:public rechge,public payment
 {
 
-}u,u1;
+}u;
 //UDF FOR MAIN MENU
 void intro()
 {
@@ -1158,7 +1227,6 @@ void intro()
 //UDF FOR ADDING CUSTOMER
 void addcustomer()
 {   
-	setcolor(YELLOW);
 	SetColorAndBackground(5,3);
 	file.open("customer.dat",ios::binary|ios::out|ios::app);
 	if(!file)
@@ -1176,7 +1244,6 @@ void addcustomer()
 //UDF FOR VIEWING A CUSTOMER
 void viewcustomer()
 {   
-	setcolor(YELLOW);
 	SetColorAndBackground(5,3);
 	system("cls");
 	string iname;
@@ -1203,7 +1270,6 @@ void viewcustomer()
 //UDF FOR DELETING A CUSTOMER
 void deletecustomer()
 {      
-	setcolor(GREEN);
 	SetColorAndBackground(5,3);
 	system("cls");
 	string iname;
@@ -1244,7 +1310,6 @@ void deletecustomer()
 //UDF TO DELETE ALL CUSTOMERS
 void deleteall()
 {
-	setcolor(TEAL);
 	SetColorAndBackground(5,3);
 	system("cls");
 	remove("customer.dat");
@@ -1280,7 +1345,6 @@ void viewall()
 //UDF TO MODIFY A CUSTOMER
 void modifycustomer()
 {    
-	setcolor(TEAL);
 	SetColorAndBackground(5,3);
 	system("cls");
 	int recc=0;
@@ -1319,7 +1383,7 @@ void modifycustomer()
 }
 //UDF OF CUSTOMER MENU
 void customer()
-{       setcolor(PINK);
+{   
 	SetColorAndBackground(5,3);
 	int op1;
 	system("cls");
@@ -1397,7 +1461,7 @@ void BalRech()
 			flag = pay();
 			if(flag == 0)
 			{
-				cout<<"\n\tConfirm Payment?(y/n): ";
+				cout<<"\n\n\t\tConfirm Payment?(y/n): ";
 				cin>>confirm;
 				
 			if(confirm == 'y')
@@ -1477,7 +1541,7 @@ void DataRech()
 			flag = pay();
 			if(flag == 0)
 			{
-				cout<<"\n\tConfirm Payment?(y/n): ";
+				cout<<"\n\n\t\tConfirm Payment?(y/n): ";
 				cin>>confirm;
 			if(confirm == 'y')
 			{
@@ -1680,7 +1744,7 @@ void transfer()
 			flag = pay();
 			if(flag == 0)
 			{
-				cout<<"\n\tConfirm Payment?(y/n): ";
+				cout<<"\n\n\t\tConfirm Payment?(y/n): ";
 				cin>>confirm;
 
 			if(confirm == 'y')
@@ -1746,7 +1810,6 @@ void transfer_his()
 }
 void payment_history()
 {
-	setcolor(YELLOW);
 	SetColorAndBackground(5,3);
 	int ch,pos;
 	long long mno1;
@@ -1790,11 +1853,9 @@ void payment_history()
 }
 void delete_history()
 {
-	setcolor(TEAL);
 	SetColorAndBackground(5,3);
 	system("cls");
 	remove("transfer.dat");
-	remove("payment.dat");
 	cout<<"\n\n\t\tHISTORY DELETED\n\n\n";
 	cout<<"\n\tpress any key to continue";
 	getch();
@@ -1804,17 +1865,20 @@ void delete_history()
 int pay()
 {
 	system("cls");
-		int choice,flag = 0,getb,getc;
+		int choice,flag = 0,geta,getb,getc;
 		cout<<"\n\n\n";
-		cout<<"\t\t1.\t\tDebit/Credit Card\n";
-		cout<<"\t\t2.\t\tNet Banking\n";
-		cout<<"\t\t3.\t\tUPI\n";
-		cout<<"\t\t4.\t\tTo Go Back To Main Menu\n\n\n\n\n";
+		cout<<"\t\t\tSelect Mode of Payment\n"<<endl;
+		cout<<"\t\t1.\tDebit/Credit Card\n";
+		cout<<"\t\t2.\tNet Banking\n";
+		cout<<"\t\t3.\tUPI\n";
+		cout<<"\t\t4.\tTo Go Back To Main Menu\n\n\n\n\n";
 		cout<<"\t\t******What you want to do??******\n\n";
 		cout<<"\t\t";cin>>choice;
 		switch(choice)
 		{
-			case 1: u.credit_card();
+			case 1: geta = u.credit_card();
+					if(geta == -1)
+					flag = 1;
 					break;
 			case 2: getb = u.net_banking();
 					if(getb == -1)
